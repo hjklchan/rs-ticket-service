@@ -14,6 +14,7 @@ pub struct Ticket {
     pub updated_at: Option<chrono::DateTime<chrono::Local>>,
 }
 
+/// implement From<Ticket> trait for TicketItem
 impl From<Ticket> for TicketItem {
     fn from(value: Ticket) -> Self {
         TicketItem {
