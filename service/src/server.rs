@@ -1,10 +1,10 @@
+use crate::model::Ticket;
 use abi::{
     ticket_server::Ticket as TicketServicer, CreateTicketRep, CreateTicketReq, DeleteTicketReq,
     GetTicketRep, GetTicketReq, GetTicketsRep, GetTicketsReq, HasTicketRep, HasTicketReq,
-    UpdateTicketReq,
+    TicketItem, UpdateTicketReq,
 };
 use sqlx::MySqlPool;
-use std::{marker, sync::Arc};
 use tonic::{Request, Response, Result, Status};
 use uuid::Uuid;
 
@@ -39,7 +39,7 @@ impl TicketServicer for TicketService {
             VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
         "#;
 
-        let _res = sqlx::query(sql)
+        sqlx::query(sql)
             .bind(&id)
             .bind(assignee_id)
             .bind(title)
@@ -48,11 +48,10 @@ impl TicketServicer for TicketService {
             .bind(status)
             .execute(&self.pool)
             .await
-            .unwrap();
+            .map(|_unused_result| ()) // Return ()
+            .map_err(|err| Status::internal(err.to_string()))?;
 
-        Ok(Response::new(CreateTicketRep {
-            new_id: id,
-        }))
+        Ok(Response::new(CreateTicketRep { new_id: id }))
     }
 
     /// Delete a ticket
@@ -60,7 +59,17 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<DeleteTicketReq>,
     ) -> Result<Response<()>, Status> {
-        todo!()
+        let id = request.into_inner().id;
+
+        // Delete record
+        let _result = sqlx::query("DELETE FROM `tickets` WHERE `id` = ?")
+            .bind(id)
+            .execute(&self.pool)
+            .await
+            .map(|_unused_result| ())
+            .map_err(|err| Status::internal(err.to_string()))?;
+
+        Ok(Response::new(()))
     }
 
     /// Update a ticket
@@ -68,7 +77,28 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<UpdateTicketReq>,
     ) -> Result<Response<()>, Status> {
-        todo!()
+        let UpdateTicketReq {
+            id,
+            assignee_id,
+            title,
+            description,
+            body,
+            status,
+        } = request.into_inner();
+
+        let sql = r#"UPDATE `tickets` SET `assignee_id` = ?, `title` = ?, `description` = ?, `body` = ?, `status` = ?, `updated_at` = NOW() WHERE `id` = ?"#;
+        let _result = sqlx::query(sql)
+            .bind(assignee_id)
+            .bind(title)
+            .bind(description)
+            .bind(body)
+            .bind(status)
+            .execute(&self.pool)
+            .await
+            .map(|_unused_result| ())
+            .map_err(|err| Status::internal(err.to_string()))?;
+
+        Ok(Response::new(()))
     }
 
     /// Get a ticket
@@ -76,7 +106,28 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<GetTicketReq>,
     ) -> Result<Response<GetTicketRep>, Status> {
-        todo!()
+        let id = request.into_inner().id;
+
+        let sql = r#"SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets` WHERE `id` = ? LIMIT 1"#;
+
+        let ticket_option: Option<Ticket> = sqlx::query_as(sql)
+            .bind(id)
+            .fetch_optional(&self.pool)
+            .await
+            .unwrap();
+        match ticket_option {
+            // If has record
+            Some(data) => Ok(Response::new(GetTicketRep {
+                id: data.id,
+                assignee_id: data.assignee_id,
+                title: data.title,
+                description: data.description,
+                body: data.body,
+                status: data.status.into(),
+            })),
+            // If record does not exist?
+            None => Err(Status::not_found("Ticket not found")),
+        }
     }
 
     /// Get ticket list
@@ -84,13 +135,42 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<GetTicketsReq>,
     ) -> Result<Response<GetTicketsRep>, Status> {
-        todo!()
+        let sql = r#"SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets`"#;
+
+        let tickets = sqlx::query_as(sql)
+            .fetch_all(&self.pool)
+            .await
+            .map(|records: Vec<Ticket>| {
+                let mut ticket_items: Vec<TicketItem> = Vec::with_capacity(4);
+                let _ = records.into_iter().map(|record| {
+                    println!("{record:?}");
+                    ticket_items.push(record.into());
+                });
+                ticket_items
+            })
+            .map_err(|err| Status::internal(err.to_string()))?;
+
+        Ok(Response::new(GetTicketsRep { tickets }))
     }
 
     async fn has_ticket(
         &self,
         request: Request<HasTicketReq>,
     ) -> Result<Response<HasTicketRep>, Status> {
-        todo!()
+        let id = request.into_inner().id;
+
+        let sql = "SELECT 1 FROM `tickets` WHERE `id` = ? LIMIT 1";
+        let result = sqlx::query(sql)
+            .bind(id)
+            .fetch_optional(&self.pool)
+            .await
+            .map_err(|err| Status::internal(err.to_string()))?;
+
+        Ok(Response::new(HasTicketRep {
+            value: match result {
+                Some(_) => true,
+                None => false,
+            },
+        }))
     }
 }
