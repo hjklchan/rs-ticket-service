@@ -8,7 +8,7 @@ pub struct Ticket {
     pub title: String,
     pub description: String,
     pub body: String,
-    pub status: u8,
+    pub status: i32,
     pub created_at: Option<chrono::DateTime<chrono::Local>>,
     pub updated_at: Option<chrono::DateTime<chrono::Local>>,
 }
