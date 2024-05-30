@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package ticket;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum TicketStatus {
+    TODO = 0;
+    IN_PROGRESS = 1;
+    UNDER_REVIEW = 2;
+    DONE = 3;
+}
+
+message TicketItem {
+    string id = 1;
+    string assignee_id = 2;
+    string title = 3;
+    string description = 4;
+    string body = 5;
+    TicketStatus status = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+
+message CreateTicketReq {
+    TicketItem ticket = 1;
+}
+
+message CreateTicketRep {
+    string new_id = 1;
+}
+
+message DeleteTicketReq {
+    string id = 1;
+}
+
+message DeleteTicketRep {} // unused: empty
+
+message UpdateTicketReq {
+    TicketItem ticket = 1;
+}
+
+message UpdateTicketRep {} // unused: empty
+
+message GetTicketReq {
+    string id = 1;
+}
+
+message GetTicketRep {
+    TicketItem ticket = 1;
+}
+
+message GetTicketsReq {} // Filtering options may be available
+
+message GetTicketsRep {
+    repeated TicketItem tickets = 1;
+}
+
+message HasTicketReq {
+    string id = 1;
+}
+
+message HasTicketRep {
+    bool value = 1;
+}
+
+service Ticket {
+    rpc CreateTicket (CreateTicketReq) returns (CreateTicketRep);
+    rpc DeleteTicket (DeleteTicketReq) returns (google.protobuf.Empty);
+    rpc UpdateTicket (UpdateTicketReq) returns (google.protobuf.Empty);
+    rpc GetTicket (GetTicketReq) returns (GetTicketRep);
+    rpc GetTickets (GetTicketsReq) returns (GetTicketsRep);
+    rpc HasTicket(HasTicketReq) returns (HasTicketRep);
+}
+
