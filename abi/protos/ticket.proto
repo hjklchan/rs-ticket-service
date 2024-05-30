@@ -24,7 +24,11 @@ message TicketItem {
 }
 
 message CreateTicketReq {
-    TicketItem ticket = 1;
+    optional string assignee_id = 2;
+    string title = 3;
+    string description = 4;
+    string body = 5;
+    TicketStatus status = 6;
 }
 
 message CreateTicketRep {
@@ -35,20 +39,30 @@ message DeleteTicketReq {
     string id = 1;
 }
 
-message DeleteTicketRep {} // unused: empty
+message DeleteTicketRep {} // NOTE: unused: empty
 
 message UpdateTicketReq {
-    TicketItem ticket = 1;
+    string id = 1;
+    string assignee_id = 2;
+    string title = 3;
+    string description = 4;
+    string body = 5;
+    TicketStatus status = 6;
 }
 
-message UpdateTicketRep {} // unused: empty
+message UpdateTicketRep {} // NOTE: unused: empty
 
 message GetTicketReq {
     string id = 1;
 }
 
 message GetTicketRep {
-    TicketItem ticket = 1;
+    string id = 1;
+    string assignee_id = 2;
+    string title = 3;
+    string description = 4;
+    string body = 5;
+    TicketStatus status = 6;
 }
 
 message GetTicketsReq {} // Filtering options may be available

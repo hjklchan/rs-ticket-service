@@ -1,19 +1,20 @@
 use abi::{
-    ticket_server::Ticket as TicketServicer, CreateTicketRep, CreateTicketReq, DeleteTicketReq, GetTicketRep, GetTicketReq, GetTicketsRep, GetTicketsReq, HasTicketRep, HasTicketReq, UpdateTicketReq
+    ticket_server::Ticket as TicketServicer, CreateTicketRep, CreateTicketReq, DeleteTicketReq,
+    GetTicketRep, GetTicketReq, GetTicketsRep, GetTicketsReq, HasTicketRep, HasTicketReq,
+    UpdateTicketReq,
 };
 use sqlx::MySqlPool;
-use std::sync::Arc;
+use std::{marker, sync::Arc};
 use tonic::{Request, Response, Result, Status};
+use uuid::Uuid;
 
 pub struct TicketService {
-    pool: Arc<MySqlPool>,
+    pool: MySqlPool,
 }
 
 impl TicketService {
     pub fn new(pool: MySqlPool) -> Self {
-        Self {
-            pool: Arc::new(pool),
-        }
+        Self { pool }
     }
 }
 
@@ -24,7 +25,34 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<CreateTicketReq>,
     ) -> Result<Response<CreateTicketRep>, Status> {
-        todo!()
+        let id = Uuid::new_v4().to_string();
+        let CreateTicketReq {
+            assignee_id,
+            title,
+            description,
+            body,
+            status,
+        } = request.into_inner();
+
+        let sql = r#"
+            INSERT INTO `tickets` (`id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at`)
+            VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+        "#;
+
+        let _res = sqlx::query(sql)
+            .bind(&id)
+            .bind(assignee_id)
+            .bind(title)
+            .bind(description)
+            .bind(body)
+            .bind(status)
+            .execute(&self.pool)
+            .await
+            .unwrap();
+
+        Ok(Response::new(CreateTicketRep {
+            new_id: id,
+        }))
     }
 
     /// Delete a ticket

@@ -22,8 +22,16 @@ pub struct TicketItem {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTicketReq {
-    #[prost(message, optional, tag = "1")]
-    pub ticket: ::core::option::Option<TicketItem>,
+    #[prost(string, optional, tag = "2")]
+    pub assignee_id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, tag = "3")]
+    pub title: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub body: ::prost::alloc::string::String,
+    #[prost(enumeration = "TicketStatus", tag = "6")]
+    pub status: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -43,8 +51,18 @@ pub struct DeleteTicketRep {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTicketReq {
-    #[prost(message, optional, tag = "1")]
-    pub ticket: ::core::option::Option<TicketItem>,
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub assignee_id: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub title: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub body: ::prost::alloc::string::String,
+    #[prost(enumeration = "TicketStatus", tag = "6")]
+    pub status: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -58,8 +76,18 @@ pub struct GetTicketReq {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTicketRep {
-    #[prost(message, optional, tag = "1")]
-    pub ticket: ::core::option::Option<TicketItem>,
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub assignee_id: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub title: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub body: ::prost::alloc::string::String,
+    #[prost(enumeration = "TicketStatus", tag = "6")]
+    pub status: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

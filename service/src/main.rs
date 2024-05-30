@@ -1,5 +1,4 @@
 use abi::ticket_server::TicketServer;
-use server::TicketService;
 
 mod db;
 mod server;
@@ -11,7 +10,7 @@ async fn main() {
     let service = server::TicketService::new(pool);
     tonic::transport::Server::builder()
         .add_service(TicketServer::new(service))
-        .serve("0.0.0.0:500561".parse().unwrap())
+        .serve("0.0.0.0:50061".parse().unwrap())
         .await
         .unwrap();
 
