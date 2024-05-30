@@ -93,6 +93,7 @@ impl TicketServicer for TicketService {
             .bind(description)
             .bind(body)
             .bind(status)
+            .bind(id)
             .execute(&self.pool)
             .await
             .map(|_unused_result| ())
@@ -114,7 +115,11 @@ impl TicketServicer for TicketService {
             .bind(id)
             .fetch_optional(&self.pool)
             .await
-            .unwrap();
+            .map_err(|err| {
+                println!("{:?}", err);
+                Status::internal(err.to_string())
+            })?;
+
         match ticket_option {
             // If has record
             Some(data) => Ok(Response::new(GetTicketRep {
@@ -123,7 +128,7 @@ impl TicketServicer for TicketService {
                 title: data.title,
                 description: data.description,
                 body: data.body,
-                status: data.status.into(),
+                status: data.status as i32,
             })),
             // If record does not exist?
             None => Err(Status::not_found("Ticket not found")),
@@ -133,7 +138,7 @@ impl TicketServicer for TicketService {
     /// Get ticket list
     async fn get_tickets(
         &self,
-        request: Request<GetTicketsReq>,
+        _request: Request<GetTicketsReq>,
     ) -> Result<Response<GetTicketsRep>, Status> {
         let sql = r#"SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets`"#;
 
@@ -142,14 +147,13 @@ impl TicketServicer for TicketService {
             .await
             .map(|records: Vec<Ticket>| {
                 let mut ticket_items: Vec<TicketItem> = Vec::with_capacity(4);
-                let _ = records.into_iter().map(|record| {
-                    println!("{record:?}");
+                for record in records.into_iter() {
                     ticket_items.push(record.into());
-                });
+                }
                 ticket_items
             })
             .map_err(|err| Status::internal(err.to_string()))?;
-
+        
         Ok(Response::new(GetTicketsRep { tickets }))
     }
 
