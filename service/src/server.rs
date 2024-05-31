@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use crate::model::Ticket;
 use abi::{
     ticket_server::Ticket as TicketServicer, CreateTicketRep, CreateTicketReq, DeleteTicketReq,
@@ -9,12 +10,12 @@ use tonic::{Request, Response, Result, Status};
 use uuid::Uuid;
 
 pub struct TicketService {
-    pool: MySqlPool,
+    pool: Arc<MySqlPool>,
 }
 
 impl TicketService {
     pub fn new(pool: MySqlPool) -> Self {
-        Self { pool }
+        Self { pool: Arc::new(pool) }
     }
 }
 
@@ -46,7 +47,7 @@ impl TicketServicer for TicketService {
             .bind(description)
             .bind(body)
             .bind(status)
-            .execute(&self.pool)
+            .execute(&*self.pool)
             .await
             .map(|_unused_result| ()) // Return ()
             .map_err(|err| Status::internal(err.to_string()))?;
@@ -64,7 +65,7 @@ impl TicketServicer for TicketService {
         // Delete record
         let _result = sqlx::query("DELETE FROM `tickets` WHERE `id` = ?")
             .bind(id)
-            .execute(&self.pool)
+            .execute(&*self.pool)
             .await
             .map(|_unused_result| ())
             .map_err(|err| Status::internal(err.to_string()))?;
@@ -93,8 +94,12 @@ impl TicketServicer for TicketService {
             .bind(description)
             .bind(body)
             .bind(status)
+<<<<<<< HEAD
             .bind(id)
             .execute(&self.pool)
+=======
+            .execute(&*self.pool)
+>>>>>>> 53f2bcbecea2e325cc56ffaf213db6452b09773e
             .await
             .map(|_unused_result| ())
             .map_err(|err| Status::internal(err.to_string()))?;
@@ -113,7 +118,7 @@ impl TicketServicer for TicketService {
 
         let ticket_option: Option<Ticket> = sqlx::query_as(sql)
             .bind(id)
-            .fetch_optional(&self.pool)
+            .fetch_optional(&*self.pool)
             .await
             .map_err(|err| {
                 println!("{:?}", err);
@@ -143,7 +148,7 @@ impl TicketServicer for TicketService {
         let sql = r#"SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets`"#;
 
         let tickets = sqlx::query_as(sql)
-            .fetch_all(&self.pool)
+            .fetch_all(&*self.pool)
             .await
             .map(|records: Vec<Ticket>| {
                 let mut ticket_items: Vec<TicketItem> = Vec::with_capacity(4);
@@ -166,7 +171,7 @@ impl TicketServicer for TicketService {
         let sql = "SELECT 1 FROM `tickets` WHERE `id` = ? LIMIT 1";
         let result = sqlx::query(sql)
             .bind(id)
-            .fetch_optional(&self.pool)
+            .fetch_optional(&*self.pool)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
 
