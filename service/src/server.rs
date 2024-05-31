@@ -94,12 +94,7 @@ impl TicketServicer for TicketService {
             .bind(description)
             .bind(body)
             .bind(status)
-<<<<<<< HEAD
-            .bind(id)
-            .execute(&self.pool)
-=======
             .execute(&*self.pool)
->>>>>>> 53f2bcbecea2e325cc56ffaf213db6452b09773e
             .await
             .map(|_unused_result| ())
             .map_err(|err| Status::internal(err.to_string()))?;
