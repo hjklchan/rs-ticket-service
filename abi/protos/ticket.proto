@@ -65,7 +65,9 @@ message GetTicketRep {
     TicketStatus status = 6;
 }
 
-message GetTicketsReq {} // Filtering options may be available
+message GetTicketsReq {
+    optional TicketStatus status = 1;
+} // Filtering options may be available
 
 message GetTicketsRep {
     repeated TicketItem tickets = 1;

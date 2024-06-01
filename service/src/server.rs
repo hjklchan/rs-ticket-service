@@ -4,7 +4,7 @@ use abi::{
     GetTicketRep, GetTicketReq, GetTicketsRep, GetTicketsReq, HasTicketRep, HasTicketReq,
     TicketItem, UpdateTicketReq,
 };
-use sqlx::MySqlPool;
+use sqlx::{MySql, MySqlPool};
 use std::sync::Arc;
 use tonic::{Request, Response, Result, Status};
 
@@ -141,9 +141,16 @@ impl TicketServicer for TicketService {
         &self,
         _request: Request<GetTicketsReq>,
     ) -> Result<Response<GetTicketsRep>, Status> {
-        let sql = r#"SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets`"#;
+        let GetTicketsReq { status } = _request.into_inner();
 
-        let tickets = sqlx::query_as(sql)
+        let sql = "SELECT `id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at` FROM `tickets` WHERE 1 = 1";
+
+        let mut builder: sqlx::QueryBuilder<MySql> = sqlx::QueryBuilder::new(sql);
+        if let Some(v) = status {
+            builder.push(" AND `status` = ").push_bind(v);
+        }
+
+        let tickets = builder.build_query_as()
             .fetch_all(&*self.pool)
             .await
             .map(|records: Vec<Ticket>| {
