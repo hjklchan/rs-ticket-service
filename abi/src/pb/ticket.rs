@@ -2,10 +2,10 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TicketItem {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub assignee_id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
+    #[prost(uint64, tag = "2")]
+    pub assignee_id: u64,
     #[prost(string, tag = "3")]
     pub title: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
@@ -22,8 +22,8 @@ pub struct TicketItem {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTicketReq {
-    #[prost(string, optional, tag = "2")]
-    pub assignee_id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(uint64, optional, tag = "2")]
+    pub assignee_id: ::core::option::Option<u64>,
     #[prost(string, tag = "3")]
     pub title: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
@@ -36,14 +36,14 @@ pub struct CreateTicketReq {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTicketRep {
-    #[prost(string, tag = "1")]
-    pub new_id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub new_id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTicketReq {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -51,10 +51,10 @@ pub struct DeleteTicketRep {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTicketReq {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub assignee_id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
+    #[prost(uint64, tag = "2")]
+    pub assignee_id: u64,
     #[prost(string, tag = "3")]
     pub title: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
@@ -70,16 +70,16 @@ pub struct UpdateTicketRep {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTicketReq {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTicketRep {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub assignee_id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
+    #[prost(uint64, tag = "2")]
+    pub assignee_id: u64,
     #[prost(string, tag = "3")]
     pub title: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
@@ -101,8 +101,8 @@ pub struct GetTicketsRep {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HasTicketReq {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "1")]
+    pub id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

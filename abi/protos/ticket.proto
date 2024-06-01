@@ -13,8 +13,8 @@ enum TicketStatus {
 }
 
 message TicketItem {
-    string id = 1;
-    string assignee_id = 2;
+    uint64 id = 1;
+    uint64 assignee_id = 2;
     string title = 3;
     string description = 4;
     string body = 5;
@@ -24,7 +24,7 @@ message TicketItem {
 }
 
 message CreateTicketReq {
-    optional string assignee_id = 2;
+    optional uint64 assignee_id = 2;
     string title = 3;
     string description = 4;
     string body = 5;
@@ -32,18 +32,18 @@ message CreateTicketReq {
 }
 
 message CreateTicketRep {
-    string new_id = 1;
+    uint64 new_id = 1;
 }
 
 message DeleteTicketReq {
-    string id = 1;
+    uint64 id = 1;
 }
 
 message DeleteTicketRep {} // NOTE: unused: empty
 
 message UpdateTicketReq {
-    string id = 1;
-    string assignee_id = 2;
+    uint64 id = 1;
+    uint64 assignee_id = 2;
     string title = 3;
     string description = 4;
     string body = 5;
@@ -53,12 +53,12 @@ message UpdateTicketReq {
 message UpdateTicketRep {} // NOTE: unused: empty
 
 message GetTicketReq {
-    string id = 1;
+    uint64 id = 1;
 }
 
 message GetTicketRep {
-    string id = 1;
-    string assignee_id = 2;
+    uint64 id = 1;
+    uint64 assignee_id = 2;
     string title = 3;
     string description = 4;
     string body = 5;
@@ -72,7 +72,7 @@ message GetTicketsRep {
 }
 
 message HasTicketReq {
-    string id = 1;
+    uint64 id = 1;
 }
 
 message HasTicketRep {

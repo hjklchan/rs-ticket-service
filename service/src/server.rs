@@ -26,7 +26,6 @@ impl TicketServicer for TicketService {
         &self,
         request: Request<CreateTicketReq>,
     ) -> Result<Response<CreateTicketRep>, Status> {
-        let id = Uuid::new_v4().to_string();
         let CreateTicketReq {
             assignee_id,
             title,
@@ -36,12 +35,11 @@ impl TicketServicer for TicketService {
         } = request.into_inner();
 
         let sql = r#"
-            INSERT INTO `tickets` (`id`, `assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at`)
-            VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+            INSERT INTO `tickets` (`assignee_id`, `title`, `description`, `body`, `status`, `created_at`, `updated_at`)
+            VALUES (?, ?, ?, ?, ?, NOW(), NOW())
         "#;
 
-        sqlx::query(sql)
-            .bind(&id)
+        let last_insert_id = sqlx::query(sql)
             .bind(assignee_id)
             .bind(title)
             .bind(description)
@@ -49,10 +47,10 @@ impl TicketServicer for TicketService {
             .bind(status)
             .execute(&*self.pool)
             .await
-            .map(|_unused_result| ()) // Return ()
+            .map(|result| result.last_insert_id()) // Return ()
             .map_err(|err| Status::internal(err.to_string()))?;
 
-        Ok(Response::new(CreateTicketRep { new_id: id }))
+        Ok(Response::new(CreateTicketRep { new_id: last_insert_id }))
     }
 
     /// Delete a ticket

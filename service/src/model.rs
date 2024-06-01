@@ -3,8 +3,8 @@ use sqlx::types::chrono;
 
 #[derive(Debug, sqlx::FromRow)]
 pub struct Ticket {
-    pub id: String,
-    pub assignee_id: String,
+    pub id: u64,
+    pub assignee_id: u64,
     pub title: String,
     pub description: String,
     pub body: String,
