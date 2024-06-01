@@ -1,4 +1,3 @@
-use std::sync::Arc;
 use crate::model::Ticket;
 use abi::{
     ticket_server::Ticket as TicketServicer, CreateTicketRep, CreateTicketReq, DeleteTicketReq,
@@ -6,6 +5,7 @@ use abi::{
     TicketItem, UpdateTicketReq,
 };
 use sqlx::MySqlPool;
+use std::sync::Arc;
 use tonic::{Request, Response, Result, Status};
 
 pub struct TicketService {
@@ -14,7 +14,9 @@ pub struct TicketService {
 
 impl TicketService {
     pub fn new(pool: MySqlPool) -> Self {
-        Self { pool: Arc::new(pool) }
+        Self {
+            pool: Arc::new(pool),
+        }
     }
 }
 
@@ -49,7 +51,9 @@ impl TicketServicer for TicketService {
             .map(|result| result.last_insert_id()) // Return ()
             .map_err(|err| Status::internal(err.to_string()))?;
 
-        Ok(Response::new(CreateTicketRep { new_id: last_insert_id }))
+        Ok(Response::new(CreateTicketRep {
+            new_id: last_insert_id,
+        }))
     }
 
     /// Delete a ticket
@@ -150,7 +154,7 @@ impl TicketServicer for TicketService {
                 ticket_items
             })
             .map_err(|err| Status::internal(err.to_string()))?;
-        
+
         Ok(Response::new(GetTicketsRep { tickets }))
     }
 

@@ -145,8 +145,8 @@ impl TicketStatus {
 /// Generated client implementations.
 pub mod ticket_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     #[derive(Debug, Clone)]
     pub struct TicketClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -190,9 +190,8 @@ pub mod ticket_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             TicketClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -230,23 +229,15 @@ pub mod ticket_client {
         pub async fn create_ticket(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTicketReq>,
-        ) -> std::result::Result<
-            tonic::Response<super::CreateTicketRep>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::CreateTicketRep>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/ticket.Ticket/CreateTicket",
-            );
+            let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/CreateTicket");
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("ticket.Ticket", "CreateTicket"));
@@ -256,19 +247,14 @@ pub mod ticket_client {
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTicketReq>,
         ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/ticket.Ticket/DeleteTicket",
-            );
+            let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/DeleteTicket");
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("ticket.Ticket", "DeleteTicket"));
@@ -278,19 +264,14 @@ pub mod ticket_client {
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTicketReq>,
         ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/ticket.Ticket/UpdateTicket",
-            );
+            let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/UpdateTicket");
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("ticket.Ticket", "UpdateTicket"));
@@ -300,57 +281,51 @@ pub mod ticket_client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetTicketReq>,
         ) -> std::result::Result<tonic::Response<super::GetTicketRep>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/GetTicket");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("ticket.Ticket", "GetTicket"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("ticket.Ticket", "GetTicket"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn get_tickets(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTicketsReq>,
         ) -> std::result::Result<tonic::Response<super::GetTicketsRep>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/GetTickets");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("ticket.Ticket", "GetTickets"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("ticket.Ticket", "GetTickets"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn has_ticket(
             &mut self,
             request: impl tonic::IntoRequest<super::HasTicketReq>,
         ) -> std::result::Result<tonic::Response<super::HasTicketRep>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/ticket.Ticket/HasTicket");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("ticket.Ticket", "HasTicket"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("ticket.Ticket", "HasTicket"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -410,10 +385,7 @@ pub mod ticket_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -469,21 +441,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/CreateTicket" => {
                     #[allow(non_camel_case_types)]
                     struct CreateTicketSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::CreateTicketReq>
-                    for CreateTicketSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::CreateTicketReq> for CreateTicketSvc<T> {
                         type Response = super::CreateTicketRep;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::CreateTicketReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::create_ticket(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::create_ticket(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -513,21 +480,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/DeleteTicket" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteTicketSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::DeleteTicketReq>
-                    for DeleteTicketSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::DeleteTicketReq> for DeleteTicketSvc<T> {
                         type Response = ();
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::DeleteTicketReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::delete_ticket(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::delete_ticket(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -557,21 +519,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/UpdateTicket" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateTicketSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::UpdateTicketReq>
-                    for UpdateTicketSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::UpdateTicketReq> for UpdateTicketSvc<T> {
                         type Response = ();
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateTicketReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::update_ticket(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::update_ticket(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -601,21 +558,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/GetTicket" => {
                     #[allow(non_camel_case_types)]
                     struct GetTicketSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::GetTicketReq>
-                    for GetTicketSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::GetTicketReq> for GetTicketSvc<T> {
                         type Response = super::GetTicketRep;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetTicketReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::get_ticket(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::get_ticket(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -645,21 +597,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/GetTickets" => {
                     #[allow(non_camel_case_types)]
                     struct GetTicketsSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::GetTicketsReq>
-                    for GetTicketsSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::GetTicketsReq> for GetTicketsSvc<T> {
                         type Response = super::GetTicketsRep;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetTicketsReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::get_tickets(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::get_tickets(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -689,21 +636,16 @@ pub mod ticket_server {
                 "/ticket.Ticket/HasTicket" => {
                     #[allow(non_camel_case_types)]
                     struct HasTicketSvc<T: Ticket>(pub Arc<T>);
-                    impl<T: Ticket> tonic::server::UnaryService<super::HasTicketReq>
-                    for HasTicketSvc<T> {
+                    impl<T: Ticket> tonic::server::UnaryService<super::HasTicketReq> for HasTicketSvc<T> {
                         type Response = super::HasTicketRep;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::HasTicketReq>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Ticket>::has_ticket(&inner, request).await
-                            };
+                            let fut =
+                                async move { <T as Ticket>::has_ticket(&inner, request).await };
                             Box::pin(fut)
                         }
                     }
@@ -730,18 +672,14 @@ pub mod ticket_server {
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
