@@ -7,7 +7,6 @@ use abi::{
 };
 use sqlx::MySqlPool;
 use tonic::{Request, Response, Result, Status};
-use uuid::Uuid;
 
 pub struct TicketService {
     pool: Arc<MySqlPool>,
@@ -77,7 +76,7 @@ impl TicketServicer for TicketService {
         request: Request<UpdateTicketReq>,
     ) -> Result<Response<()>, Status> {
         let UpdateTicketReq {
-            id,
+            id: _,
             assignee_id,
             title,
             description,
@@ -86,7 +85,7 @@ impl TicketServicer for TicketService {
         } = request.into_inner();
 
         let sql = r#"UPDATE `tickets` SET `assignee_id` = ?, `title` = ?, `description` = ?, `body` = ?, `status` = ?, `updated_at` = NOW() WHERE `id` = ?"#;
-        let _result = sqlx::query(sql)
+        sqlx::query(sql)
             .bind(assignee_id)
             .bind(title)
             .bind(description)
